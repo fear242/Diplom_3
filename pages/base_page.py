@@ -1,5 +1,6 @@
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver import ActionChains
 
 
 class BasePage:
@@ -24,3 +25,10 @@ class BasePage:
     def scroll_to_element(self, locator):
         element = self.driver.find_element(*locator)
         self.driver.execute_script('arguments[0].scrollIntoView();', element)
+
+    def drag_and_drop_element(self, element_locator, destination_locator):
+        action = ActionChains(self.driver)
+        action.drag_and_drop(element_locator, destination_locator)
+
+    def find_element_by_text(self, text):
+        self.driver.find_element_by_xpath(f'//*[contains(text(), {text}')
