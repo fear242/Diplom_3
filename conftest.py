@@ -5,11 +5,9 @@ from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from faker import Faker
 import requests
-
+import data
 
 fake = Faker(['ru_RU'])
-URL_register = 'https://stellarburgers.nomoreparties.site/api/auth/register'
-URL_user = 'https://stellarburgers.nomoreparties.site/api/auth/user'
 
 
 @pytest.fixture(scope='function', params=['Chrome', 'Firefox'])
@@ -39,7 +37,6 @@ def registered_user():
         "password": password,
         "name": name
     }
-    response = requests.post(URL_register, data=payload)
-    if response.status_code == 200:
-        yield payload
-    requests.delete(URL_user, headers={'authorization': response.json()["accessToken"]})
+    response = requests.post(data.URL_register, data=payload)
+    yield payload
+    requests.delete(data.URL_user, headers={'authorization': response.json()["accessToken"]})

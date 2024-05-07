@@ -1,30 +1,21 @@
 from pages.base_page import BasePage
-from locators.base_page_locators import BasePageLocators
 from locators.login_account_page_locators import LoginPageLocators
-from locators.main_page_locators import MainPageLocators
 import allure
-
-
-URL_login = 'https://stellarburgers.nomoreparties.site/login'
+import data
 
 
 class LoginAccountPage(BasePage):
 
     @allure.step('Входим в аккаунт')
-    def login_into_account(self, registered_user):
-        payload = registered_user
-        self.open_url(URL_login)
+    def login_into_account(self, payload):
+        self.open_url(data.URL_login)
         self.text_input_to_element(LoginPageLocators.INPUT_EMAIL, payload["email"])
         self.text_input_to_element(LoginPageLocators.INPUT_PASSWORD, payload["password"])
         self.click_on_element(LoginPageLocators.BUTTON_LOGIN)
 
     @allure.step('Переход на страницу логина')
     def open_login_page(self):
-        self.open_url(URL_login)
-
-    @allure.step('Клик по кнопке "Личный кабинет"')
-    def click_on_account_button(self):
-        self.click_on_element(BasePageLocators.BUTTON_ACCOUNT)
+        self.open_url(data.URL_login)
 
     @allure.step('Клик по кнопке "Восстановить пароль"')
     def click_on_restore_pass_button(self):
@@ -76,7 +67,7 @@ class LoginAccountPage(BasePage):
     def click_on_logout_button(self):
         self.click_on_element(LoginPageLocators.BUTTON_LOGOUT)
 
-    @allure.step('Находим кнопку"Оформить заказ"')
-    def find_make_order_button(self):
-        element = self.find_element_with_wait(MainPageLocators.BUTTON_MAKE_ORDER)
+    @allure.step('Находим кнопку "Войти"')
+    def find_login_button(self):
+        element = self.find_element_with_wait(LoginPageLocators.BUTTON_LOGIN)
         return element.is_displayed()

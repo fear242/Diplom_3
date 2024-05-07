@@ -1,29 +1,38 @@
+from selenium.common import ElementClickInterceptedException
+import data
 from pages.base_page import BasePage
 from locators.main_page_locators import MainPageLocators
-from locators.base_page_locators import BasePageLocators
-from locators.login_account_page_locators import LoginPageLocators
-from locators.feed_page_locators import FeedPageLocators
 import allure
 
 
 class MainPage(BasePage):
 
+    @allure.step('Создаём заказ')
+    def make_order(self):
+        self.drag_and_drop_element(MainPageLocators.INGREDIENT, MainPageLocators.PLACE_FOR_BUN)
+        self.click_on_element(MainPageLocators.BUTTON_MAKE_ORDER)
+        self.press_esc()
+
     @allure.step('Открываем главную страницу')
     def open_main_page(self):
-        self.open_url('https://stellarburgers.nomoreparties.site/')
+        self.open_url(data.URL)
 
     @allure.step('Клик по кнопке "Личный кабинет"')
     def click_on_account_button(self):
-        self.click_on_element(BasePageLocators.BUTTON_ACCOUNT)
+        try:
+            self.click_on_element(MainPageLocators.BUTTON_ACCOUNT)
+        except ElementClickInterceptedException:
+            self.click_on_element(MainPageLocators.BUTTON_ACCOUNT)  # Без исключения драйвер прикидывается, что
+            #  клику что-то мешает в тестах Ленты Заказов.
 
     @allure.step('Находим кнопку "Конструктор"')
     def find_burger_constructor_button(self):
-        element = self.find_element_with_wait(BasePageLocators.BUTTON_CONSTRUCTOR)
+        element = self.find_element_with_wait(MainPageLocators.BUTTON_CONSTRUCTOR)
         return element.is_displayed()
 
     @allure.step('Клик по кнопке "Конструктор"')
     def click_on_constructor_button(self):
-        self.click_on_element(BasePageLocators.BUTTON_CONSTRUCTOR)
+        self.click_on_element(MainPageLocators.BUTTON_CONSTRUCTOR)
 
     @allure.step('Находим заголовок "Соберите бургер"')
     def find_burger_constructor_title(self):
@@ -32,11 +41,15 @@ class MainPage(BasePage):
 
     @allure.step('Клик по кнопке "Лента заказов"')
     def click_on_orders_feed_button(self):
-        self.click_on_element(BasePageLocators.BUTTON_ORDERS_FEED)
+        try:
+            self.click_on_element(MainPageLocators.BUTTON_ORDERS_FEED)
+        except ElementClickInterceptedException:
+            self.click_on_element(MainPageLocators.BUTTON_ORDERS_FEED) # Без исключения драйвер прикидывается, что
+            #  клику что-то мешает в тестах Ленты Заказов.
 
-    @allure.step('Находим заголовок "Лента заказов"')
-    def find_feed_title(self):
-        element = self.find_element_with_wait(FeedPageLocators.FEED_PAGE_TITLE)
+    @allure.step('Находим кнопку"Оформить заказ"')
+    def find_make_order_button(self):
+        element = self.find_element_with_wait(MainPageLocators.BUTTON_MAKE_ORDER)
         return element.is_displayed()
 
     @allure.step('Клик по ингредиенту')
@@ -64,9 +77,3 @@ class MainPage(BasePage):
     @allure.step('Получаем информацию от счётчика ингредиента')
     def receive_ingredient_counter_text(self):
         return self.get_text_from_element(MainPageLocators.INGREDIENT_COUNTER)[0]
-
-    @allure.step('Находим кнопку "Войти"')
-    def find_login_button(self):
-        element = self.find_element_with_wait(LoginPageLocators.BUTTON_LOGIN)
-        return element.is_displayed()
-

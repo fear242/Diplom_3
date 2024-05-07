@@ -17,6 +17,7 @@ Diplom_3/
 │  ├-test_feed_page.py - Проверки страницы Лента заказов
 │  ├-test_login_account_page.py - Проверки сстраниц Логин и Аккаунт
 │  └-test_main_page.py - Проверки главной страницы
+├-data.py - Ccылки на страницы тестируемого ресурса
 ├-allure_results - Отчёты о тестах
 ├-conftest.py - Фикстуры
 ├-README.md - Этот файл
