@@ -1,0 +1,5 @@
+URL = 'https://stellarburgers.nomoreparties.site/'
+URL_register = 'https://stellarburgers.nomoreparties.site/api/auth/register'
+URL_user = 'https://stellarburgers.nomoreparties.site/api/auth/user'
+URL_forgot = 'https://stellarburgers.nomoreparties.site/forgot-password'
+URL_login = 'https://stellarburgers.nomoreparties.site/login'
